@@ -1,25 +1,29 @@
-// script.js - THE ENTIRE NEW CODE FOR YOUR PLAYCODE PROJECT
 
-const socket = io('https://blipchat.onrender.com'); 
+const socket = io(); // Changed from io('https://blipchat.onrender.com')
 
 const form = document.getElementById('form');
 const input = document.getElementById('m');
 const messages = document.getElementById('messages');
-const roomList = document.getElementById('room-list'); 
-const currentRoomDisplay = document.getElementById('current-room-display'); 
+const roomList = document.getElementById('room-list');
+const currentRoomDisplay = document.getElementById('current-room-display');
 
 // --- Global state for current room and username ---
 let username = null;
 let currentRoom = 'Room 1'; // Changed default room to 'Room 1'
-let clientId = null; 
+let clientId = null;
 
 // --- Room names for client-side logic ---
 const ROOM_NAMES = {
-    ROOM1: 'Room 1',      // Changed
-    ROOM2: 'Room 2',      // Changed
-    ADMIN_ROOM: 'Admin Room'
+    ROOM1: 'Room 1',
+    ROOM2: 'Room 2',
+    ADMIN_ROOM: 'Admin Room',
+    PRIVATE1: 'Private 1', // New Room
+    PRIVATE2: 'Private 2'  // New Room
 };
-const ADMIN_PASSWORD = 'o5i'; // Client-side password for prompt
+const ADMIN_PASSWORD = 'o5i';
+const PRIVATE1_PASSWORD = 'personal'; // Password for Private 1
+const PRIVATE2_PASSWORD = 'link';     // Password for Private 2
+
 
 // --- Function to prompt for username ---
 function getUsername() {
@@ -31,20 +35,20 @@ function getUsername() {
     }
     console.log(`Your username is: ${username}`);
     // Immediately join the default room after getting username
-    joinRoom(currentRoom, null); 
+    joinRoom(currentRoom, null);
 }
 
 // Helper function to add a message to the UI
-function addMessageToUI(senderUsername, msgText, isMine = false, isSystem = false) { 
+function addMessageToUI(senderUsername, msgText, isMine = false, isSystem = false) {
     const item = document.createElement('li');
-    
+
     if (isSystem) {
         item.classList.add('system-message');
         item.textContent = msgText; // System messages don't have a username prefix
     } else {
-        item.innerHTML = `<strong>${senderUsername}:</strong> ${msgText}`; 
+        item.innerHTML = `<strong>${senderUsername}:</strong> ${msgText}`;
     }
-    
+
     if (isMine) {
         item.classList.add('my-message'); // Add class for styling 'my' messages
     }
@@ -59,6 +63,22 @@ function joinRoom(roomName, password) {
     if (roomName === ROOM_NAMES.ADMIN_ROOM && !password) {
         password = prompt("Enter password for Admin Room:");
         if (!password) { // If user cancels password prompt
+            alert("Room join cancelled.");
+            return;
+        }
+    }
+    // If trying to join Private 1, prompt for password (NEW)
+    if (roomName === ROOM_NAMES.PRIVATE1 && !password) {
+        password = prompt("Enter password for Private 1:");
+        if (!password) {
+            alert("Room join cancelled.");
+            return;
+        }
+    }
+    // If trying to join Private 2, prompt for password (NEW)
+    if (roomName === ROOM_NAMES.PRIVATE2 && !password) {
+        password = prompt("Enter password for Private 2:");
+        if (!password) {
             alert("Room join cancelled.");
             return;
         }
@@ -80,10 +100,10 @@ roomList.addEventListener('click', (e) => {
             }
             // Add active class to new room (temporarily, will be confirmed by server)
             clickedItem.classList.add('active');
-            
+
             // Update currentRoomDisplay temporarily
             currentRoomDisplay.textContent = newRoom;
-            
+
             // Attempt to join the room
             joinRoom(newRoom, null); // Pass null for password initially, will prompt if needed
         }
@@ -112,7 +132,7 @@ socket.on('chat message', (messageData) => {
     // Only display message if it belongs to the current room
     if (messageData.room === currentRoom) {
         const isMine = messageData.id === clientId;
-        const isSystem = messageData.id === 'system'; 
+        const isSystem = messageData.id === 'system';
         addMessageToUI(messageData.username, messageData.text, isMine, isSystem);
     }
 });
@@ -145,7 +165,7 @@ socket.on('roomJoined', (data) => {
 // Handle failed room joins
 socket.on('roomJoinFailed', (reason) => {
     alert(`Failed to join room: ${reason}`);
-    
+
     // Revert UI to the previously active room
     document.querySelectorAll('.room-item').forEach(item => {
         if (item.dataset.room === currentRoom) { // currentRoom still holds the last successfully joined room
@@ -170,7 +190,7 @@ socket.on('connect', () => {
         getUsername();
     } else {
         // If already connected and username exists, re-join current room on reconnect
-        joinRoom(currentRoom, null); 
+        joinRoom(currentRoom, null);
     }
 });
 
