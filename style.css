@@ -10,27 +10,27 @@ body {
     overflow: hidden; /* Prevent scrollbars due to animation */
 
     /* Dark Blue Gradient Background */
-    background: linear-gradient(135deg, #0A1128, #1A2B42, #0A1128); /* Dark Blue-900 to Blue-600 inspired, then back to 900 for seamless loop */
+    background: linear-gradient(135deg, #800080, #00008b, #add8e6, #ffff00); 
     background-size: 400% 400%; /* Larger than viewport for animation */
     animation: gradientShift 15s ease infinite alternate; /* Slowly moving gradient */
 
     /* Default (Dark) Theme Variables - General UI */
     --text-color: #E2E8F0; /* Light gray for general text */
     --input-bg: #2D3748; /* Darker grey for input */
-    --input-text: #F7FAFC; /* Very light text for input */
-    --button-bg: #2563EB; /* Bright blue for button */
+    --input-text: #F7FAFC; 
+    --button-bg: #2563EB;
     --button-text: white;
-    --border-color: #4A5568; /* Medium grey for borders */
-    --chat-container-bg: rgba(0, 0, 0, 0.4); /* Slightly transparent dark background for container */
+    --border-color: #66cdaa;
+    --chat-container-bg: rgba(0, 0, 0, 0.4); 
     --sidebar-bg: rgba(0, 0, 0, 0.3); /* Slightly transparent dark for sidebar */
-    --room-item-hover-bg: rgba(255, 255, 255, 0.1);
+    --room-item-hover-bg: rgba(118, 240, 44, 0.15);
     --room-item-active-bg: #2563EB; /* Active room highlight */
 
     /* Default Message Colors (Golden for mine, Grey for others) */
-    --message-bg-other: #E5E7EB; /* Light grey for others' messages */
-    --message-text-other: #4B5563; /* Dark gray text for others' messages */
-    --message-bg-mine: #FFC107; /* Golden background for my messages */
-    --message-text-mine: #1F2937; /* Dark text for my messages */
+    --message-bg-other: #ffffe0; /* Light grey for others' messages */
+    --message-text-other: #000000; /* Dark gray text for others' messages */
+    --message-bg-mine: #006400; /* Golden background for my messages */
+    --message-text-mine: #fafad2; /* light yellwo text for my messages */
     --system-message-color: #9CA3AF; /* Muted color for system messages */
 }
 
