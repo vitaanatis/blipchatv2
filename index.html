@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>BlipChat</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="chat-container">
+        <div id="sidebar">
+            <h2>Rooms</h2>
+            <ul id="room-list">
+                <li id="room-1" class="room-item active" data-room="Room 1">Room 1</li> <li id="room-2" class="room-item" data-room="Room 2">Room 2</li> <li id="room-admin-room" class="room-item" data-room="Admin Room">Admin Room</li>
+            </ul>
+        </div>
+
+        <div id="main-chat-area">
+            <h1>BlipChat - <span id="current-room-display">Room 1</span></h1> <p>You might have to wait until it says "timeout" then it will start.</p><div id="messages"></div>
+            <form id="form">
+                <input id="m" autocomplete="off" placeholder="Type your message..." /><button>Send</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.2/socket.io.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
